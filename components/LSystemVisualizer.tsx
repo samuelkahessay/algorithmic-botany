@@ -1,9 +1,28 @@
 "use client";
 
 import { forwardRef, useImperativeHandle, useRef } from "react";
+import dynamic from "next/dynamic";
 import { LSystemConfig, RenderMode, ColorPalette } from "@/types/lsystem";
 import LSystemCanvas, { LSystemCanvasRef } from "./LSystemCanvas";
-import LSystem3DCanvas, { LSystem3DCanvasRef } from "./LSystem3DCanvas";
+import type { LSystem3DCanvasRef } from "./LSystem3DCanvas";
+
+// Dynamically import 3D canvas with SSR disabled to prevent build-time Three.js evaluation
+const LSystem3DCanvas = dynamic(
+  () => import("./LSystem3DCanvas"),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="flex items-center justify-center bg-gray-100 dark:bg-gray-900 rounded-lg border border-gray-300 dark:border-gray-600"
+        style={{ width: 800, height: 600 }}
+      >
+        <div className="text-center">
+          <p className="text-gray-600 dark:text-gray-400">Loading 3D renderer...</p>
+        </div>
+      </div>
+    )
+  }
+);
 
 interface LSystemVisualizerProps {
   config: LSystemConfig;

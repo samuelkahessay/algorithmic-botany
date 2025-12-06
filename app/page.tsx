@@ -1,5 +1,8 @@
 "use client";
 
+// Force dynamic rendering to prevent static generation attempts
+export const dynamic = 'force-dynamic';
+
 import { useState, useRef } from "react";
 import { LSystemConfig, RenderMode } from "@/types/lsystem";
 import LSystemVisualizer, { LSystemVisualizerRef } from "@/components/LSystemVisualizer";
